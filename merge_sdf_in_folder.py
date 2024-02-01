@@ -2,7 +2,7 @@ from rdkit import Chem
 import os
 
 
-folder = "/Users/alexanderhowarth/Desktop/Projects/DM1/TRB0050025/exvol/"
+folder = "/Users/alexanderhowarth/Desktop/FP4.5_train/docked_poses/"
 
 writer = Chem.SDWriter(folder + "combined.sdf")
 
@@ -20,10 +20,7 @@ for f in os.listdir(folder):
                 writer.write(m)
                 c+=1
 
-            if c == 999999:
-                c_2+=1
-                c = 0
-                writer = Chem.SDWriter(folder + "combined_" + str(c_2) + ".sdf")
+
 
 
 
