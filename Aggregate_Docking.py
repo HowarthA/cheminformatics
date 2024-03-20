@@ -31,11 +31,11 @@ for k,v in zip(HTRF_ids.keys(),HTRF_ids.values()):
     HTRF_ids[k] = np.mean(v)
 '''
 
-docked_file = "/Users/alexanderhowarth/Desktop/Projects/DM1/TRB0050025/exvol/two_rings/comb_r2_props_thresh_filter_confs_ans.sdf"
+docked_file = "/Users/alexanderhowarth/Desktop/Projects/YTHDC1/Y_swap/Y_swap/DS_spark_sol_logD_conf_53551_ans.sdf"
 
-w_ = Chem.SDWriter(docked_file[:-4] + "_agg.sdf")
+w_ = Chem.SDWriter(docked_file[:-4] + "_score_agg.sdf")
 
-merge_prop = "APF_50025"
+merge_prop = "Score"
 
 #w_ = Chem.SDWriter("/Users/alexanderhowarth/Desktop/"+ "test_agg.sdf")
 
@@ -44,7 +44,7 @@ mols = []
 mols_to_write = []
 
 
-for m in tqdm.tqdm(Chem.SDMolSupplier(docked_file)):
+for m in tqdm.tqdm(Chem.SDMolSupplier(docked_file,removeHs = False)):
 
     if m:
 
@@ -88,7 +88,7 @@ for k in Dict.keys():
     vs = Dict[k]
 
 
-    w = np.argmin(vs[0])
+    w = np.argmin(vs[1])
     median_afp = np.median(vs[0])
     std_afp = np.std(vs[0])
 
@@ -98,19 +98,9 @@ for k in Dict.keys():
     n_poses = len(vs[1])
     m = vs[2][w]
 
-    m.SetProp("median_" + merge_prop,str(median_afp))
-    m.SetProp("stdev_" + merge_prop,str(std_afp))
-    m.SetProp("n_poses",str(n_poses))
-
-    m.SetProp("median_Score",str(median_s))
-    m.SetProp("stdev_Score",str(std_s))
-
     mols_to_write.append(m )
 
-
 print("poses" , len(mols) , "merged" , len(mols_to_write))
-
-
 
 for m in mols_to_write:
 

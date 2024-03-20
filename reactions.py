@@ -10,7 +10,7 @@ R1 = Chem.MolFromMolFile("/Users/alexanderhowarth/Desktop/Projects/AR/R1.sdf")
 print(Chem.MolToSmiles(m))
 
 #####
-rxn_1 = AllChem.ReactionFromSmarts('[#6:1][#53].[#8:3][#53]>>[#6:1][#8:3]')
+rxn_1 = AllChem.ReactionFromSmarts('[O:1]CCCl>>CC(Cl)C[O:1]')
 
 product = rxn_1.RunReactants((R1, m))[0][0]
 

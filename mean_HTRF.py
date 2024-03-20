@@ -2,9 +2,9 @@ from rdkit import Chem
 import numpy as np
 
 
-f = "/Users/alexanderhowarth/Desktop/Projects/YTHDC1/DS_231220/Model/HTRF_3_1_2024.sdf"
+f = "/Users/alexanderhowarth/Desktop/Projects/YTHDC1/FP4_HTRF_Model/Data/0209_Model.sdf"
 
-writer = Chem.SDWriter("/Users/alexanderhowarth/Desktop/Projects/YTHDC1/DS_231220/Model/HTRF_3_1_2024_mean.sdf")
+writer = Chem.SDWriter("/Users/alexanderhowarth/Desktop/Projects/YTHDC1/FP4_HTRF_Model/Data/0209_Model_mean.sdf")
 
 c= 0
 
@@ -18,15 +18,13 @@ for m in Chem.SDMolSupplier(f):
 
         if ID_ not in prop_dict.keys():
             try:
-                rel = m.GetProp("RELATIVE_IC50")
-                rel = rel.replace("<" , "")
-                rel = rel.replace(">" , "")
-                abs = m.GetProp("ABSOLUTE_IC50")
+
+                abs = m.GetProp("HTRF Absolute IC50 Mean [µM]")
 
                 abs= abs.replace("<" , "")
                 abs = abs.replace(">" , "")
 
-                prop_dict[ID_] = [ m,[float(abs)],[float(rel)] ]
+                prop_dict[ID_] = [ m,[float(abs)]]
 
             except:
 
@@ -36,16 +34,14 @@ for m in Chem.SDMolSupplier(f):
             try:
 
 
-                rel = m.GetProp("RELATIVE_IC50")
-                rel = rel.replace("<", "")
-                rel = rel.replace(">", "")
-                abs = m.GetProp("ABSOLUTE_IC50")
+
+                abs = m.GetProp("HTRF Absolute IC50 Mean [µM]")
 
                 abs = abs.replace("<", "")
                 abs = abs.replace(">", "")
 
                 prop_dict[ID_][1].append(float(abs))
-                prop_dict[ID_][2].append(float(rel))
+
 
             except:
 
@@ -56,7 +52,7 @@ for k,v in zip( prop_dict.keys() , prop_dict.values() ):
 
     m_ = prop_dict[k][0]
 
-    m_.SetProp("ABSOLUTE_IC50_mean",str( np.mean(prop_dict[k][1]) ))
-    m_.SetProp("RELATIVE_IC50_mean",str( np.mean(prop_dict[k][2]) ))
+    m_.SetProp("HTRF Absolute IC50 Mean [µM]",str( np.mean(prop_dict[k][1]) ))
+
 
     writer.write(m_)
